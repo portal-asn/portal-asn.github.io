@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Proveedores | Inicio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0e2340;
+    --blue: #1b56c4;
+    --blue-dark: #15449c;
+    --blue-soft: #e8effb;
+    --bg: #f3f5f8;
+    --line: #dde3ec;
+    --text: #1c2b3f;
+    --muted: #64748b;
+    --font: 'Inter', 'Segoe UI', Tahoma, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: var(--font); color: var(--text); background: var(--bg); line-height: 1.55; }
+  a { color: inherit; }
+  .in { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  /* Barra superior */
+  .topbar { background: var(--navy); color: #fff; }
+  .topbar .in { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 14px; padding-bottom: 14px; }
+  .brand { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 17px; text-decoration: none; }
+  .brand-mark { width: 36px; height: 36px; border-radius: 8px; background: var(--blue); display: grid; place-items: center; }
+  nav { display: flex; align-items: center; gap: 24px; font-size: 14.5px; }
+  nav a { color: #c5d1e4; text-decoration: none; }
+  nav a:hover { color: #fff; }
+  nav a.cta { background: #fff; color: var(--navy); font-weight: 600; padding: 8px 16px; border-radius: 8px; }
+  nav a.cta:hover { background: var(--blue-soft); }
+
+  /* Portada */
+  .hero { background: var(--navy); color: #fff; padding: 56px 0 72px; }
+  .hero .in { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+  .hero h1 { font-size: 42px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 800; margin: 0 0 18px; }
+  .hero p.lead { color: #b7c5dc; font-size: 18px; max-width: 52ch; margin: 0 0 30px; }
+  .btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; height: 50px; padding: 0 26px; border-radius: 8px; font: 600 16px var(--font); text-decoration: none; border: 1px solid transparent; transition: background .15s; }
+  .btn.primary { background: var(--blue); color: #fff; }
+  .btn.primary:hover { background: #2a66d9; }
+  .btn.ghost { color: #fff; border-color: #3b5478; }
+  .btn.ghost:hover { background: #1a3358; }
+  .btn:focus-visible, nav a:focus-visible { outline: 3px solid #8fb2f2; outline-offset: 3px; }
+
+  /* Ejemplo de ASN */
+  .ticket { background: #fff; color: var(--text); border-radius: 14px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,.28); }
+  .ticket-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 22px; border-bottom: 1px solid var(--line); background: #f8fafc; }
+  .ticket-head b { font-size: 15px; }
+  .ticket-head span { font-size: 12.5px; color: var(--muted); }
+  .ticket dl { margin: 0; padding: 6px 22px 10px; }
+  .ticket .row { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+  .ticket .row:last-child { border-bottom: 0; }
+  .ticket dt { color: var(--muted); }
+  .ticket dd { margin: 0; font-weight: 600; text-align: right; }
+
+  /* Secciones */
+  section.block { padding: 64px 0 0; }
+  section.block:last-of-type { padding-bottom: 64px; }
+  .block h2 { font-size: 28px; letter-spacing: -0.02em; margin: 0 0 8px; }
+  .block > .in > p.sub { color: var(--muted); margin: 0 0 32px; max-width: 60ch; }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; list-style: none; padding: 0; margin: 0; }
+  .steps li { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 24px; }
+  .steps .n { width: 34px; height: 34px; border-radius: 8px; background: var(--blue); color: #fff; font-weight: 700; display: grid; place-items: center; margin-bottom: 14px; }
+  .steps h3 { margin: 0 0 6px; font-size: 17px; }
+  .steps p { margin: 0; color: var(--muted); font-size: 15px; }
+
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .panel { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 26px; }
+  .panel h3 { margin: 0 0 6px; font-size: 18px; }
+  .panel p { margin: 0 0 16px; color: var(--muted); font-size: 15px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
+  .chips li { background: var(--blue-soft); color: var(--blue-dark); font-weight: 600; font-size: 14px; padding: 6px 14px; border-radius: 999px; }
+
+  .band { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .band h2 { margin: 0 0 4px; font-size: 24px; }
+  .band p { margin: 0; color: var(--muted); }
+  .band .btn.primary { background: var(--blue); }
+  .band .btn.primary:hover { background: var(--blue-dark); }
+
+  footer { border-top: 1px solid var(--line); text-align: center; font-size: 13px; color: var(--muted); padding: 24px; }
+
+  @media (max-width: 900px) {
+    .hero .in { grid-template-columns: 1fr; gap: 36px; }
+    .hero h1 { font-size: 34px; }
+    .steps, .two { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    nav a:not(.cta) { display: none; }
+    .hero { padding: 40px 0 52px; }
+    .hero h1 { font-size: 29px; }
+    .hero p.lead { font-size: 16px; }
+    .btn { width: 100%; justify-content: center; }
+    .band { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="in">
+    <a href="index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>
+      </span>
+      Portal de Proveedores
+    </a>
+    <nav aria-label="Principal">
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#informacion">Información</a>
+      <a href="agendamiento.html" class="cta">Agendar cita</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="in">
+    <div>
+      <h1>Agenda tu recepción y crea tu ASN en un solo paso</h1>
+      <p class="lead">Informa tu despacho con anticipación y reserva la fecha y hora de descarga en el andén. Sin llamadas ni correos cruzados.</p>
+      <div class="btns">
+        <a href="agendamiento.html" class="btn primary">Crear ASN y agendar cita</a>
+        <a href="#como-funciona" class="btn ghost">Ver cómo funciona</a>
+      </div>
+    </div>
+
+    <div class="ticket" aria-label="Ejemplo de ASN">
+      <div class="ticket-head"><b>Ejemplo de ASN</b><span>Datos de muestra</span></div>
+      <dl>
+        <div class="row"><dt>Proveedor</dt><dd>Empresa Ejemplo SpA</dd></div>
+        <div class="row"><dt>Orden de compra</dt><dd>PO-998877</dd></div>
+        <div class="row"><dt>Transportista</dt><dd>TransAndes</dd></div>
+        <div class="row"><dt>Familia y volumen</dt><dd>Electrohogar · 12 pallets</dd></div>
+        <div class="row"><dt>Cita en andén</dt><dd>15/10/2026, 10:30 hrs</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="como-funciona">
+  <div class="in">
+    <h2>Cómo funciona</h2>
+    <p class="sub">Completa un formulario de tres secciones. Toma pocos minutos.</p>
+    <ol class="steps">
+      <li><div class="n">1</div><h3>Identifica tu empresa</h3><p>Ingresa tu RUT, razón social, la orden de compra y un correo de contacto.</p></li>
+      <li><div class="n">2</div><h3>Describe la carga</h3><p>Elige la familia de producto, la cantidad de pallets y el transportista.</p></li>
+      <li><div class="n">3</div><h3>Reserva el andén</h3><p>Indica la fecha y hora de llegada. Revisaremos tu solicitud y te confirmaremos por correo.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="block" id="informacion">
+  <div class="in">
+    <h2>Información útil</h2>
+    <p class="sub">Qué necesitas saber antes de enviar tu solicitud.</p>
+    <div class="two">
+      <div class="panel">
+        <h3>Familias de producto</h3>
+        <p>Selecciona la que corresponda a tu carga.</p>
+        <ul class="chips">
+          <li>Cocina</li><li>Cuidado personal</li><li>Decoración</li><li>Dormitorio</li>
+          <li>Electrohogar</li><li>Ferretería</li><li>Muebles</li><li>Tecnología</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Transportistas</h3>
+        <p>Indica la empresa que realizará el despacho.</p>
+        <ul class="chips">
+          <li>LogiExpress</li><li>RutSur</li><li>TransAndes</li>
+        </ul>
+        <p style="margin:18px 0 0"><b style="color:var(--text)">¿Qué es un ASN?</b> Es el Aviso Anticipado de Embarque: la información de tu envío que recibimos antes de que llegue el camión.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="in">
+    <div class="band">
+      <div>
+        <h2>¿Listo para enviar tu mercadería?</h2>
+        <p>Crea tu ASN y reserva tu hora de descarga ahora.</p>
+      </div>
+      <a href="agendamiento.html" class="btn primary">Ir al formulario</a>
+    </div>
+  </div>
+</section>
+
+<footer>Portal de Proveedores · Gestión de recepción de mercadería</footer>
+
+</body>
+</html>

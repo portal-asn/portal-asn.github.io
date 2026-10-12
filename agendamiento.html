@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Proveedores | ASN y Agendamiento de Andén</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0e2340;
+    --blue: #1b56c4;
+    --blue-dark: #15449c;
+    --blue-soft: #e8effb;
+    --bg: #f3f5f8;
+    --card: #ffffff;
+    --line: #dde3ec;
+    --text: #1c2b3f;
+    --muted: #64748b;
+    --ok: #1a7f4b;
+    --error: #b42318;
+    --font: 'Inter', 'Segoe UI', Tahoma, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font); color: var(--text); background: var(--bg); line-height: 1.5; }
+
+  /* Encabezado */
+  .topbar { background: var(--navy); color: #fff; }
+  .topbar-in { max-width: 1120px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 17px; }
+  .brand-mark { width: 36px; height: 36px; border-radius: 8px; background: var(--blue); display: grid; place-items: center; }
+  .topbar small { color: #a9b8d0; font-size: 13px; }
+
+  .hero { background: #fff; border-bottom: 1px solid var(--line); }
+  .hero-in { max-width: 1120px; margin: 0 auto; padding: 28px 24px 24px; }
+  .hero h1 { margin: 0 0 6px; font-size: 26px; letter-spacing: -0.02em; }
+  .hero p { margin: 0 0 22px; color: var(--muted); max-width: 62ch; }
+  .steps { display: flex; gap: 8px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; }
+  .steps li { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--muted); padding: 6px 14px 6px 6px; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
+  .steps b { width: 24px; height: 24px; border-radius: 50%; background: var(--blue-soft); color: var(--blue); display: grid; place-items: center; font-size: 12px; }
+
+  /* Layout */
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 28px 24px 56px; display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start; }
+  form { display: grid; gap: 20px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .card-head { padding: 18px 24px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 14px; }
+  .card-head .num { width: 30px; height: 30px; border-radius: 8px; background: var(--blue); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 14px; flex: none; }
+  .card-head h2 { margin: 0; font-size: 17px; }
+  .card-head p { margin: 0; font-size: 13px; color: var(--muted); }
+  .card-body { padding: 24px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .field { display: flex; flex-direction: column; min-width: 0; }
+  label { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .hint { font-size: 12.5px; color: var(--muted); margin-top: 5px; }
+  input, select {
+    width: 100%; height: 44px; padding: 0 14px; font: inherit; font-size: 15px; color: var(--text);
+    background: #fff; border: 1px solid #c6cfdc; border-radius: 8px; transition: border-color .15s, box-shadow .15s;
+  }
+  select {
+    appearance: none; -webkit-appearance: none; padding-right: 40px; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+  }
+  input::placeholder { color: #9aa7b8; }
+  input:hover, select:hover { border-color: #9fb0c8; }
+  input:focus, select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(27,86,196,.18); }
+  input:user-invalid, select:user-invalid { border-color: var(--error); }
+
+  .actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .actions p { margin: 0; font-size: 13px; color: var(--muted); max-width: 46ch; }
+  .btn { height: 48px; padding: 0 28px; border: 0; border-radius: 8px; background: var(--blue); color: #fff; font: 600 16px var(--font); cursor: pointer; transition: background .15s; }
+  .btn:hover { background: var(--blue-dark); }
+  .btn:focus-visible { outline: 3px solid rgba(27,86,196,.4); outline-offset: 2px; }
+  .btn:disabled { background: #8ea6d6; cursor: wait; }
+  .btn.ghost { background: #fff; color: var(--blue); border: 1px solid var(--blue); }
+  .btn.ghost:hover { background: var(--blue-soft); }
+
+  /* Resumen */
+  .summary { position: sticky; top: 20px; }
+  .summary .card-head { background: #f8fafc; }
+  .summary dl { margin: 0; padding: 8px 24px 16px; }
+  .summary .row { padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .summary .row:last-child { border-bottom: 0; }
+  .summary dt { font-size: 12.5px; color: var(--muted); }
+  .summary dd { margin: 2px 0 0; font-weight: 600; font-size: 15px; word-break: break-word; }
+  .summary dd.empty { color: #a3afbf; font-weight: 400; }
+
+  /* Mensajes */
+  .alert { display: none; padding: 14px 18px; border-radius: 8px; font-size: 14px; border: 1px solid #f1b8b3; background: #fdecea; color: var(--error); }
+  .alert.show { display: block; }
+  .done { display: none; text-align: center; padding: 48px 28px; }
+  .done.show { display: block; }
+  .done .tick { width: 64px; height: 64px; border-radius: 50%; background: #e3f4ea; color: var(--ok); display: grid; place-items: center; margin: 0 auto 18px; }
+  .done h2 { margin: 0 0 8px; font-size: 22px; }
+  .done p { margin: 0 auto 24px; color: var(--muted); max-width: 48ch; }
+
+  footer { text-align: center; font-size: 13px; color: var(--muted); padding: 0 24px 32px; }
+
+  @media (max-width: 900px) {
+    .wrap { grid-template-columns: 1fr; }
+    .summary { position: static; order: -1; }
+    .summary dl { display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 20px; }
+  }
+  @media (max-width: 560px) {
+    .card-body { grid-template-columns: 1fr; padding: 20px 18px; }
+    .topbar small { display: none; }
+    .hero h1 { font-size: 22px; }
+    .btn { width: 100%; }
+    .summary dl { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>
+      </span>
+      Portal de Proveedores
+    </div>
+    <small>Recepción y logística</small>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-in">
+    <h1>Aviso Anticipado de Embarque (ASN) y agendamiento</h1>
+    <p>Informa los datos de tu despacho y reserva la fecha y hora de descarga en el andén. Completa las tres secciones para enviar la solicitud.</p>
+    <ol class="steps">
+      <li><b>1</b>Proveedor</li>
+      <li><b>2</b>Carga y transporte</li>
+      <li><b>3</b>Agendamiento</li>
+    </ol>
+  </div>
+</section>
+
+<main class="wrap">
+
+  <div>
+    <!-- Enlace de Formspree -->
+    <form action="https://formspree.io/f/mdeklnwj" method="POST" id="asn-form">
+      <input type="hidden" name="_subject" value="Nuevo ASN y agendamiento de cita">
+
+      <section class="card">
+        <div class="card-head">
+          <span class="num">1</span>
+          <div><h2>Proveedor y orden de compra</h2><p>Identificación de la empresa y de la PO asociada.</p></div>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label for="rut">RUT de la empresa</label>
+            <input type="text" id="rut" name="RUT_Proveedor" placeholder="76.123.456-7" autocomplete="off" required>
+          </div>
+          <div class="field">
+            <label for="razon">Razón social</label>
+            <input type="text" id="razon" name="Razon_Social" placeholder="Nombre de la empresa" required>
+          </div>
+          <div class="field">
+            <label for="po">N° de orden de compra (PO)</label>
+            <input type="text" id="po" name="Orden_Compra" placeholder="PO-998877" required>
+          </div>
+          <div class="field">
+            <label for="correo">Correo de contacto</label>
+            <input type="email" id="correo" name="email" placeholder="correo@empresa.cl" required>
+            <span class="hint">Usaremos este correo para confirmarte la cita.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <span class="num">2</span>
+          <div><h2>Carga y transporte</h2><p>Qué envías y quién lo traslada.</p></div>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label for="familia">Familia</label>
+            <select id="familia" name="Familia" required>
+              <option value="" selected disabled>Selecciona una familia</option>
+              <option value="Cocina">Cocina</option>
+              <option value="Cuidado personal">Cuidado personal</option>
+              <option value="Decoración">Decoración</option>
+              <option value="Dormitorio">Dormitorio</option>
+              <option value="Electrohogar">Electrohogar</option>
+              <option value="Ferretería">Ferretería</option>
+              <option value="Muebles">Muebles</option>
+              <option value="Tecnología">Tecnología</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="transportista">Transportista</label>
+            <select id="transportista" name="Transportista" required>
+              <option value="" selected disabled>Selecciona un transportista</option>
+              <option value="LogiExpress">LogiExpress</option>
+              <option value="RutSur">RutSur</option>
+              <option value="TransAndes">TransAndes</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="pallets">Cantidad de pallets</label>
+            <input type="number" id="pallets" name="Cantidad_Pallets" min="1" placeholder="12" required>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <span class="num">3</span>
+          <div><h2>Agendamiento de andén</h2><p>Fecha y hora en que llegará el camión.</p></div>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label for="fecha">Fecha de entrega</label>
+            <input type="date" id="fecha" name="Fecha_Llegada" required>
+          </div>
+          <div class="field">
+            <label for="hora">Hora de llegada</label>
+            <input type="time" id="hora" name="Hora_Llegada" required>
+          </div>
+        </div>
+      </section>
+
+      <div class="alert" id="error" role="alert">No pudimos enviar la solicitud. Revisa tu conexión e inténtalo de nuevo.</div>
+
+      <div class="actions">
+        <p>Al enviar, recibiremos tu solicitud y te confirmaremos la cita por correo.</p>
+        <button type="submit" class="btn" id="enviar">Generar ASN y agendar cita</button>
+      </div>
+    </form>
+
+    <section class="card done" id="done" aria-live="polite">
+      <div class="tick" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>
+      </div>
+      <h2>Solicitud enviada</h2>
+      <p>Recibimos tu ASN y la solicitud de cita. Te confirmaremos la fecha y hora al correo que indicaste.</p>
+      <button type="button" class="btn ghost" id="nuevo">Crear otro ASN</button>
+    </section>
+  </div>
+
+  <aside class="card summary" aria-live="polite">
+    <div class="card-head"><div><h2>Resumen del ASN</h2><p>Se actualiza mientras completas el formulario.</p></div></div>
+    <dl>
+      <div class="row"><dt>Proveedor</dt><dd id="s-prov" class="empty">Sin completar</dd></div>
+      <div class="row"><dt>Orden de compra</dt><dd id="s-po" class="empty">Sin completar</dd></div>
+      <div class="row"><dt>Transportista</dt><dd id="s-trans" class="empty">Sin completar</dd></div>
+      <div class="row"><dt>Familia y volumen</dt><dd id="s-carga" class="empty">Sin completar</dd></div>
+      <div class="row"><dt>Cita en andén</dt><dd id="s-cita" class="empty">Sin completar</dd></div>
+    </dl>
+  </aside>
+
+</main>
+
+<footer>Portal de Proveedores · Gestión de recepción de mercadería</footer>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const form = $('asn-form');
+
+  // No permitir fechas pasadas
+  const h = new Date();
+  $('fecha').min = h.getFullYear() + '-' + String(h.getMonth() + 1).padStart(2, '0') + '-' + String(h.getDate()).padStart(2, '0');
+
+  // Formato automático de RUT chileno
+  $('rut').addEventListener('input', e => {
+    let v = e.target.value.replace(/[^0-9kK]/g, '').toUpperCase().slice(0, 9);
+    if (v.length > 1) v = v.slice(0, -1).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '-' + v.slice(-1);
+    e.target.value = v;
+  });
+
+  // Resumen en vivo
+  function set(id, texto) {
+    const el = $(id);
+    el.textContent = texto || 'Sin completar';
+    el.classList.toggle('empty', !texto);
+  }
+  function actualizar() {
+    set('s-prov', $('razon').value.trim());
+    set('s-po', $('po').value.trim());
+    set('s-trans', $('transportista').value);
+    const p = $('pallets').value;
+    set('s-carga', [$('familia').value, p ? p + ' pallets' : ''].filter(Boolean).join(' · '));
+    let cita = '';
+    if ($('fecha').value) {
+      const [y, m, d] = $('fecha').value.split('-');
+      cita = d + '/' + m + '/' + y + ($('hora').value ? ', ' + $('hora').value + ' hrs' : '');
+    }
+    set('s-cita', cita);
+  }
+  form.addEventListener('input', actualizar);
+  form.addEventListener('change', actualizar);
+
+  // Envío a Formspree sin salir de la página
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = $('enviar');
+    $('error').classList.remove('show');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    try {
+      const r = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+      if (!r.ok) throw new Error();
+      form.style.display = 'none';
+      $('done').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      $('error').classList.add('show');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Generar ASN y agendar cita';
+    }
+  });
+
+  $('nuevo').addEventListener('click', () => {
+    form.reset();
+    actualizar();
+    $('done').classList.remove('show');
+    form.style.display = '';
+  });
+</script>
+
+</body>
+</html>
